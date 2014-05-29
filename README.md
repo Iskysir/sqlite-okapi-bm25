@@ -38,7 +38,23 @@ In this schema, the `title` column is at index `0` because it is the first colum
 
 The last two optional arguments, `k1` and `b`, are free parameters specific to the Okapi BM25 algorithm. The default values are `k1 = 1.2` and `b = 0.75`. You can tweak these for advanced optimization, but the defaults will probably work fine.
 
+### okapi\_bm25f(matchinfo, \[column_weight, ...])
+
+Using the example at the end of the [SQLite3 FTS3 documentation][a] this is how you should structure a call using this function where the title column is weighted 10x more important than the content column, although supplying no arguments to okapiBM25f() other than the matchinfo() will result in regular BM25 with all columns weighted as 1.0:
+
+
+	SELECT title, snippet(documents) FROM documents JOIN ( 
+		SELECT docid, okapi_bm25f(matchinfo(documents, 'pcxnal'), 10, 1) AS rank
+		FROM documents
+		WHERE documents MATCH <query>
+		ORDER BY rank DESC 
+		LIMIT 10 OFFSET 0
+	) AS ranktable USING(docid)
+	WHERE documents MATCH <query>
+	ORDER BY ranktable.rank DESC
+
 [m]: https://www.sqlite.org/fts3.html#matchinfo
+[a]: http://www.sqlite.org/fts3.html#appendix_a
 
 ## License
 
