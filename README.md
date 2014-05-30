@@ -26,9 +26,9 @@ The ranking function uses the built-in [matchinfo][m] function to obtain the dat
 
     SELECT title FROM documents
       WHERE title MATCH <query>
-      ORDER BY okapi_bm25(matchinfo(documents, 'pcnalx'), 0) DESC
+      ORDER BY okapi_bm25(matchinfo(documents, 'pcxnal'), 0) DESC
 
-The `matchinfo` function **must** be called with `'pcnalx'` as the second argument. This argument defines the structure of the data given to the `okapi_bm25` function, which accepts the data in only one form. If the `matchinfo` function is called with a different second argument, the extension may provide incorrect results or fail to work entirely.
+The `matchinfo` function **must** be called with `'pcxnal'` as the second argument. This argument defines the structure of the data given to the `okapi_bm25` function, which accepts the data in only one form. If the `matchinfo` function is called with a different second argument, the extension may provide incorrect results or fail to work entirely.
 
 The `okapi_bm25` function only calculates the score for one column at a time. The `searchColumn` argument, provided as `0` in the example above, specifies the column it will use. The number is the index of the column within the FTS table. Here's a schema for the example above:
 
@@ -45,6 +45,21 @@ Using the example at the end of the [SQLite3 FTS3 documentation][a] this is how 
 
 	SELECT title, snippet(documents) FROM documents JOIN ( 
 		SELECT docid, okapi_bm25f(matchinfo(documents, 'pcxnal'), 10, 1) AS rank
+		FROM documents
+		WHERE documents MATCH <query>
+		ORDER BY rank DESC 
+		LIMIT 10 OFFSET 0
+	) AS ranktable USING(docid)
+	WHERE documents MATCH <query>
+	ORDER BY ranktable.rank DESC
+	
+### okapi\_bm25f\_kb(matchinfo, k1, b, \[column_weight, ...])
+
+Also provided is an implementation of Okapi BM25f that you can define the free variables `k1` and `b` followed optionally by a list of column weights. The example below is the same as before except showing the typical values for `k1` and `b` being assed through.
+
+
+	SELECT title, snippet(documents) FROM documents JOIN ( 
+		SELECT docid, okapi_bm25f(matchinfo(documents, 'pcxnal'), 1.2, 0.75, 10, 1) AS rank
 		FROM documents
 		WHERE documents MATCH <query>
 		ORDER BY rank DESC 

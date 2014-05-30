@@ -11,3 +11,4 @@ gcc -g -fPIC -dynamiclib -Isqlite3 -arch i386 -o okapi_bm25.dylib okapi_bm25.c
 
 sqlite3 -echo -column -header -cmd ".load okapi_bm25" test/test.db "SELECT okapi_bm25(matchinfo(songs, 'pcxnal'), 1) AS rank, snippet(songs, '', '', '...', -1, -10) as snip FROM songs WHERE songs MATCH \"Bob* OR Dylan*\" ORDER BY rank DESC;"
 sqlite3 -echo -column -header -cmd ".load okapi_bm25" test/test.db "SELECT okapi_bm25f(matchinfo(songs, 'pcxnal')) AS rank, snippet(songs, '', '', '...', -1, -10) as snip FROM songs WHERE songs MATCH \"Bob* OR Dylan*\" ORDER BY rank DESC;"
+sqlite3 -echo -column -header -cmd ".load okapi_bm25" test/test.db "SELECT okapi_bm25f_kb(matchinfo(songs, 'pcxnal'), 1.20, 0.75) AS rank, snippet(songs, '', '', '...', -1, -10) as snip FROM songs WHERE songs MATCH \"Bob* OR Dylan*\" ORDER BY rank DESC;"
