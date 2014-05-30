@@ -14,14 +14,15 @@ static void okapi_bm25(sqlite3_context *pCtx, int nVal, sqlite3_value **apVal) {
 
     int P_OFFSET = 0;
     int C_OFFSET = 1;
-    int N_OFFSET = 2;
-    int A_OFFSET = 3;
-
+    int X_OFFSET = 2;
+    
     int termCount = matchinfo[P_OFFSET];
     int colCount = matchinfo[C_OFFSET];
-
+    
+    int N_OFFSET = X_OFFSET + 3*termCount*colCount;
+    int A_OFFSET = N_OFFSET + 1;
     int L_OFFSET = (A_OFFSET + colCount);
-    int X_OFFSET = (L_OFFSET + colCount);
+
 
     double totalDocs = matchinfo[N_OFFSET];
     double avgLength = matchinfo[A_OFFSET + searchTextCol];
