@@ -55,11 +55,11 @@ Using the example at the end of the [SQLite3 FTS3 documentation][a] this is how 
 	
 ### okapi\_bm25f\_kb(matchinfo, k1, b, \[column_weight, ...])
 
-Also provided is an implementation of Okapi BM25f that you can define the free variables `k1` and `b` followed optionally by a list of column weights. The example below is the same as before except showing the typical values for `k1` and `b` being assed through.
+Also provided is an implementation of Okapi BM25f that you can define the free variables `k1` and `b` followed optionally by a list of column weights. The example below is the same as before except showing the typical values for `k1` and `b` being passed through.
 
 
 	SELECT title, snippet(documents) FROM documents JOIN ( 
-		SELECT docid, okapi_bm25f(matchinfo(documents, 'pcxnal'), 1.2, 0.75, 10, 1) AS rank
+		SELECT docid, okapi_bm25f_kb(matchinfo(documents, 'pcxnal'), 1.2, 0.75, 10, 1) AS rank
 		FROM documents
 		WHERE documents MATCH <query>
 		ORDER BY rank DESC 
