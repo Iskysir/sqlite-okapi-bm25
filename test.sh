@@ -5,6 +5,7 @@
 # This test script is for MacOSX
 # See http://www.sqlite.org/loadext.html for more info on how to compile an extension for your target OS
 
+#sqlite3 expects a 32bit architecture. Most modern machines are 64bit architecture so have to enforce 32bit.
 gcc -g -fPIC -dynamiclib -Isqlite3 -arch i386 -o okapi_bm25.dylib okapi_bm25.c
 
 
