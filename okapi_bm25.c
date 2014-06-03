@@ -134,7 +134,7 @@ static void okapi_bm25f(sqlite3_context *pCtx, int nVal, sqlite3_value **apVal) 
             //Yuanhua Lv and ChengXiang Zhai. 'Lower-bounding term frequency normalization.' In Proceedings of CIKM'2011, pages 7-16.
             //http://sifaka.cs.uiuc.edu/~ylv2/pub/cikm11-lowerbound.pdf
             
-            double weight = ((nVal >= col+1) ? sqlite3_value_double(apVal[col+1]) : 1.0);
+            double weight = ((nVal > col+1) ? sqlite3_value_double(apVal[col+1]) : 1.0);
             
 //            double subsequence = matchinfo[S_OFFSET + col];
             
@@ -219,7 +219,7 @@ static void okapi_bm25f_kb(sqlite3_context *pCtx, int nVal, sqlite3_value **apVa
             //Yuanhua Lv and ChengXiang Zhai. 'Lower-bounding term frequency normalization.' In Proceedings of CIKM'2011, pages 7-16.
             //http://sifaka.cs.uiuc.edu/~ylv2/pub/cikm11-lowerbound.pdf
             
-            double weight = ((nVal >= col+1) ? sqlite3_value_double(apVal[col+1]) : 1.0);
+            double weight = ((nVal > col+3) ? sqlite3_value_double(apVal[col+3]) : 1.0);
             
             //            double subsequence = matchinfo[S_OFFSET + col];
             
